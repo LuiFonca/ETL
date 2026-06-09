@@ -7,7 +7,8 @@ import pandas as pd
 def carregar_dados():
 
 
-    base = Path("./dados")
+    base = Path(__file__).parent / "dados"
+
 
     return {
         "Customers": pd.read_csv(base / "olist_customers_dataset.csv"),

@@ -1,5 +1,5 @@
 from extract import carregar_dados
-
+from load import carregar_tabela
 from transform import (
     tratar_customers,
     tratar_geolocation,
@@ -11,11 +11,8 @@ from transform import (
     tratar_sellers
 )
 
-from load import carregar_tabela
-
 
 # RELATÓRIO DE QUALIDADE
-
 
 def analisar_dataframe(nome, df):
     print("\n" + "=" * 70)
@@ -47,96 +44,137 @@ def analisar_dataframe(nome, df):
     print(df.dtypes)
 
 
-# EXTRACT
+# PIPELINE ETL
 
-tabelas = carregar_dados()
+def executar_pipeline():
+
+    # EXTRACT
+
+    print("\n")
+    print("#" * 70)
+    print("INICIANDO EXTRAÇÃO DOS DADOS")
+    print("#" * 70)
+
+    tabelas = carregar_dados()
+
+    # RELATÓRIO ANTES
+
+    print("\n")
+    print("#" * 70)
+    print("RELATÓRIO ANTES DA TRANSFORMAÇÃO")
+    print("#" * 70)
+
+    for nome, df in tabelas.items():
+        analisar_dataframe(nome, df)
+
+    # TRANSFORM
+
+    print("\n")
+    print("#" * 70)
+    print("INICIANDO TRANSFORMAÇÃO DOS DADOS")
+    print("#" * 70)
+
+    tabelas["Customers"] = tratar_customers(
+        tabelas["Customers"]
+    )
+
+    tabelas["Geolocation"] = tratar_geolocation(
+        tabelas["Geolocation"]
+    )
+
+    tabelas["Order Items"] = tratar_order_items(
+        tabelas["Order Items"]
+    )
+
+    tabelas["Order Payments"] = tratar_order_payments(
+        tabelas["Order Payments"]
+    )
+
+    tabelas["Order Reviews"] = tratar_order_reviews(
+        tabelas["Order Reviews"]
+    )
+
+    tabelas["Orders"] = tratar_orders(
+        tabelas["Orders"]
+    )
+
+    tabelas["Products"] = tratar_products(
+        tabelas["Products"]
+    )
+
+    tabelas["Sellers"] = tratar_sellers(
+        tabelas["Sellers"]
+    )
+
+    # LOAD
+
+    print("\n")
+    print("#" * 70)
+    print("INICIANDO CARGA PARA O MYSQL")
+    print("#" * 70)
+
+    carregar_tabela(
+        tabelas["Customers"],
+        "customers"
+    )
+
+    carregar_tabela(
+        tabelas["Geolocation"],
+        "geolocation"
+    )
+
+    carregar_tabela(
+        tabelas["Order Items"],
+        "order_items"
+    )
+
+    carregar_tabela(
+        tabelas["Order Payments"],
+        "order_payments"
+    )
+
+    carregar_tabela(
+        tabelas["Order Reviews"],
+        "order_reviews"
+    )
+
+    carregar_tabela(
+        tabelas["Orders"],
+        "orders"
+    )
+
+    carregar_tabela(
+        tabelas["Products"],
+        "products"
+    )
+
+    carregar_tabela(
+        tabelas["Sellers"],
+        "sellers"
+    )
+
+    print("\n")
+    print("#" * 70)
+    print("ETL FINALIZADO COM SUCESSO!")
+    print("#" * 70)
+
+    # RELATÓRIO DEPOIS
+
+    print("\n")
+    print("#" * 70)
+    print("RELATÓRIO APÓS A TRANSFORMAÇÃO")
+    print("#" * 70)
+
+    for nome, df in tabelas.items():
+        analisar_dataframe(nome, df)
+
+    print("\nPipeline ETL executado com sucesso!")
+
+    return tabelas
 
 
-# RELATÓRIO ANTES
+# EXECUÇÃO PELO TERMINAL
 
-
-print("\n")
-print("#" * 70)
-print("RELATÓRIO ANTES DA TRANSFORMAÇÃO")
-print("#" * 70)
-
-for nome, df in tabelas.items():
-    analisar_dataframe(nome, df)
-
-
-# TRANSFORM
-
-
-tabelas["Customers"] = tratar_customers(tabelas["Customers"])
-tabelas["Geolocation"] = tratar_geolocation(tabelas["Geolocation"])
-tabelas["Order Items"] = tratar_order_items(tabelas["Order Items"])
-tabelas["Order Payments"] = tratar_order_payments(tabelas["Order Payments"])
-tabelas["Order Reviews"] = tratar_order_reviews(tabelas["Order Reviews"])
-tabelas["Orders"] = tratar_orders(tabelas["Orders"])
-tabelas["Products"] = tratar_products(tabelas["Products"])
-tabelas["Sellers"] = tratar_sellers(tabelas["Sellers"])
-
-
-# Push para o MySQL
-
-
-print("\n")
-print("#" * 70)
-print("INICIANDO CARGA PARA O MYSQL")
-print("#" * 70)
-
-carregar_tabela(
-    tabelas["Customers"],
-    "customers"
-)
-
-carregar_tabela(
-    tabelas["Geolocation"],
-    "geolocation"
-)
-
-carregar_tabela(
-    tabelas["Order Items"],
-    "order_items"
-)
-
-carregar_tabela(
-    tabelas["Order Payments"],
-    "order_payments"
-)
-
-carregar_tabela(
-    tabelas["Order Reviews"],
-    "order_reviews"
-)
-
-carregar_tabela(
-    tabelas["Orders"],
-    "orders"
-)
-
-carregar_tabela(
-    tabelas["Products"],
-    "products"
-)
-
-carregar_tabela(
-    tabelas["Sellers"],
-    "sellers"
-)
-
-print("\nETL FINALIZADO COM SUCESSO!")
-
-
-# RELATÓRIO DEPOIS
-
-
-print("\n")
-print("#" * 70)
-print("RELATÓRIO APÓS A TRANSFORMAÇÃO")
-print("#" * 70)
-
-for nome, df in tabelas.items():
-    analisar_dataframe(nome, df)
-
-print("\nPipeline ETL executado com sucesso!")
+if __name__ == "__main__":
+    executar_pipeline()
+    
