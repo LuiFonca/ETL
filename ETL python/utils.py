@@ -37,3 +37,17 @@ def gerar_relatorio_dataframe(nome, df):
     texto += "\n\n"
 
     return texto
+def pesquisar_dataframe(df, termo):
+
+    return df[
+        df.astype(str)
+          .apply(
+              lambda x:
+              x.str.contains(
+                  termo,
+                  case=False,
+                  na=False
+              )
+          )
+          .any(axis=1)
+    ]    
