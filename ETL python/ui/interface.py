@@ -9,9 +9,20 @@ def iniciar_interface():
 
     janela.title("ETL OLIST")
 
-    janela.geometry("600x400")
+    largura = janela.winfo_screenwidth()
+    altura = janela.winfo_screenheight()
 
-    janela.resizable(False, False)
+    janela.geometry(
+    f"{int(largura * 0.85)}x{int(altura * 0.85)}"
+)
+
+    janela.minsize(
+        1000,
+        700
+    )
+    janela.geometry("1200x700")
+
+    janela.resizable(True, True)
 
     criar_home(janela)
 

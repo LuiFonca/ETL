@@ -117,6 +117,12 @@ class TelaRelatorio:
         )
 
         self.lbl_pagina.pack(side="left")
+        
+        tk.Button(
+            rodape,
+            text="Próxima →",
+            command=self.proxima_pagina
+        ).pack(side="right", padx=5)
 
         tk.Button(
             rodape,
@@ -124,11 +130,6 @@ class TelaRelatorio:
             command=self.pagina_anterior
         ).pack(side="right")
 
-        tk.Button(
-            rodape,
-            text="Próxima →",
-            command=self.proxima_pagina
-        ).pack(side="right", padx=5)
 
         # voltar
         tk.Button(
@@ -230,9 +231,16 @@ class TelaRelatorio:
                 text=coluna
             )
 
+            largura = max(
+                len(coluna) * 12,
+                120
+            )
+
+
             self.tree.column(
                 coluna,
-                width=120
+                width=largura,
+                stretch=True
             )
 
         for _, linha in pagina.iterrows():
