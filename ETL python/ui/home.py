@@ -1,6 +1,6 @@
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import messagebox
-from ui.mysql_view import abrir_mysql
+from ui.dashboard import abrir_dashboard
 
 from main import executar_pipeline
 
@@ -12,57 +12,57 @@ from ui.relatorios import (
 from ui.mysql_view import abrir_mysql
 
 
-
 def criar_home(janela):
+
+    # Limpa a tela atual
 
     for widget in janela.winfo_children():
         widget.destroy()
 
-    frame = tk.Frame(janela)
+    # Frame principal
 
-    frame.place(
+    frame_principal = ctk.CTkFrame(
+        janela,
+        corner_radius=15
+    )
+
+    frame_principal.place(
         relx=0.5,
         rely=0.5,
         anchor="center"
     )
 
-    titulo = tk.Label(
-        frame,
+    # Título
+
+    titulo = ctk.CTkLabel(
+        frame_principal,
         text="ETL OLIST",
-        font=("Arial", 24, "bold")
+        font=(
+            "Arial",
+            32,
+            "bold"
+        )
     )
 
-    titulo.pack(pady=20)
+    titulo.pack(
+        pady=(25, 10),
+        padx=40
+    )
 
+    subtitulo = ctk.CTkLabel(
+        frame_principal,
+        text="Pipeline ETL + Explorador de Dados",
+        font=(
+            "Arial",
+            14
+        )
+    )
 
-    # BOTÕES
+    subtitulo.pack(
+        pady=(0, 20)
+    )
 
-    tk.Button(
-        frame,
-        text="Dados Brutos",
-        width=30,
-        height=2,
-        command=lambda:
-            abrir_dados_brutos(janela)
-    ).pack(pady=5)
-
-    tk.Button(
-        frame,
-        text="Dados Tratados",
-        width=30,
-        height=2,
-        command=lambda:
-            abrir_dados_tratados(janela)
-    ).pack(pady=5)
-
-    tk.Button(
-    frame,
-    text="Explorar MySQL",
-    width=30,
-    height=2,
-    command=lambda:
-        abrir_mysql(janela)
-    ).pack(pady=5)
+    # Função ETL
 
     def executar():
 
@@ -72,7 +72,7 @@ def criar_home(janela):
 
             messagebox.showinfo(
                 "Sucesso",
-                "ETL executado com sucesso."
+                "ETL executado com sucesso!"
             )
 
         except Exception as erro:
@@ -82,18 +82,64 @@ def criar_home(janela):
                 str(erro)
             )
 
-    tk.Button(
-        frame,
-        text="Executar ETL",
-        width=30,
-        height=2,
-        command=executar
-    ).pack(pady=5)
+    largura = 320
 
-    tk.Button(
-        frame,
-        text="Sair",
-        width=30,
-        height=2,
+    # Botões
+
+    ctk.CTkButton(
+        frame_principal,
+        text="🚀 Executar ETL",
+        width=largura,
+        height=45,
+        command=executar
+    ).pack(pady=6)
+
+    ctk.CTkButton(
+        frame_principal,
+        text="📂 Dados Brutos",
+        width=largura,
+        height=45,
+        command=lambda:
+            abrir_dados_brutos(janela)
+    ).pack(pady=6)
+
+    ctk.CTkButton(
+        frame_principal,
+        text="🧹 Dados Tratados",
+        width=largura,
+        height=45,
+        command=lambda:
+            abrir_dados_tratados(janela)
+    ).pack(pady=6)
+
+    ctk.CTkButton(
+        frame_principal,
+        text="🗄️ Explorador MySQL",
+        width=largura,
+        height=45,
+        command=lambda:
+            abrir_mysql(janela)
+    ).pack(pady=6)
+
+    # Futuro Dashboard
+
+    ctk.CTkButton(
+        frame_principal,
+        text="📊 Dashboard",
+        width=largura,
+        height=45,
+        command=lambda:
+            abrir_dashboard(janela)
+    ).pack(pady=6)
+
+    ctk.CTkButton(
+        frame_principal,
+        text="❌ Sair",
+        width=largura,
+        height=45,
+        fg_color="#B22222",
+        hover_color="#8B0000",
         command=janela.destroy
-    ).pack(pady=5)
+    ).pack(
+        pady=(15, 25)
+    )
