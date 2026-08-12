@@ -1,4 +1,4 @@
-# ui/styles.py
+
 
 import customtkinter as ctk
 

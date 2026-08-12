@@ -96,6 +96,15 @@ def criar_home(janela):
 
     ctk.CTkButton(
         frame_principal,
+        text="📊 Dashboard",
+        width=largura,
+        height=45,
+        command=lambda:
+            abrir_dashboard(janela)
+    ).pack(pady=6)
+
+    ctk.CTkButton(
+        frame_principal,
         text="📂 Dados Brutos",
         width=largura,
         height=45,
@@ -121,16 +130,6 @@ def criar_home(janela):
             abrir_mysql(janela)
     ).pack(pady=6)
 
-    # Futuro Dashboard
-
-    ctk.CTkButton(
-        frame_principal,
-        text="📊 Dashboard",
-        width=largura,
-        height=45,
-        command=lambda:
-            abrir_dashboard(janela)
-    ).pack(pady=6)
 
     ctk.CTkButton(
         frame_principal,
